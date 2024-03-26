@@ -1,0 +1,36 @@
+from django.contrib.auth.models import User
+>>> user1 = User.objects.create_user('user1', '[email1@mail.ru]', '1234')
+>>> user2 = User.objects.create_user('user2', '[email2@mail.ru]', '1234') 
+
+author1 = Author.objects.create(User=user1)
+author2 = Author.objects.create(User=user2)
+
+category1 = Category.objects.create(name='Новости')
+category2 = Category.objects.create(name='Стихи')
+category3 = Category.objects.create(name='Истории')
+category4 = Category.objects.create(name='Главное')
+
+post1 = Post.objects.create(author_id=author1, post_type='1',  topic_name='Имя1', post_text='Привет1')
+post2 = Post.objects.create(author_id=author2, post_type='2',  topic_name='Имя2', post_text='Привет2')
+post3 = Post.objects.create(author_id=author1, post_type='3',  topic_name='Имя3', post_text='Привет3')
+
+p1 = Post.objects.get(pk=1)
+p1.like()
+p1.post_rating
+
+c1 = Comment.objects.get(pk=1)
+c1.like()
+c1.comment_rating
+
+a1.update_rating()
+a2.update_rating()
+
+best_author = Author.objects.order_by('-rating').values_list('User__username', flat=True).first()
+author_best_post = Post.objects.order_by('-rating').values_list('Author__User__username', flat=True).first()
+
+
+Post.objects.order_by('-rating').values_list('Author__User__username', 'rating', 'title').first()
+
+b_post = Post.objects.order_by('-rating').first()
+b_comments = Comment.objects.filter(post=b_post)
+b_comments.values('publication_date', 'User__username', 'rating', 'com_text')
